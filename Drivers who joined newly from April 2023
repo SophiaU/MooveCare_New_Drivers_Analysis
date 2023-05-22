@@ -1,1 +1,9 @@
-
+----Drivers who joined newly from April 2023---
+Select distinct drn,city, min(effective_start_date)effective_start_date from 
+(select c.registration_no as plate_number, b.drn, b.name, a.effective_start_date, a.effective_end_date,
+c.make, c.model, c.year, c.color, mc.name as city, c.vin, a.description 
+from moovebackend.driver_drivervehicleassignment a, moovebackend.driver_driver b, moovebackend.driver_vehicle c, 
+moovebackend.markets_city mc where a.driver_id = b.id and a.vehicle_id = c.id and c.city_id = mc.id 
+order by mc.name, effective_end_date desc, effective_start_date desc) 
+group by drn,city
+having min(effective_start_date) >= '2023-04-01' and lower(city) = 'lagos'
